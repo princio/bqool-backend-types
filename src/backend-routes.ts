@@ -39,8 +39,8 @@ import type {
   CreateExpressionRequest,
   CreateCodeRequest,
   CreateErrorRequest,
-  UpdateRubricItemFieldRequest,
-  CreateRubricItemRequest,
+  UpdateCriterionFieldRequest,
+  CreateCriterionRequest,
 } from './rubric';
 import type {
   PopulationListItem,
@@ -165,7 +165,7 @@ export interface BackendApiTypeMap {
     list:   { method: 'GET';    query: { question_id: number }; body: never; response: RubricConceptRow[] };
     create: { method: 'POST';   body: CreateRubricConceptRequest; response: OkIdResponse };
     one:    { method: 'GET';    params: { id: number }; body: never; response: RubricConceptRow };
-    update: { method: 'PUT';    params: { id: number }; body: UpdateRubricItemFieldRequest; response: OkResponse };
+    update: { method: 'PUT';    params: { id: number }; body: UpdateCriterionFieldRequest; response: OkResponse };
     delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
   };
 
@@ -177,30 +177,30 @@ export interface BackendApiTypeMap {
     delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
   };
 
-  rubricItems: {
+  criteria: {
     one:    { method: 'GET';    params: { type: string; id: number }; body: never; response: unknown };
-    update: { method: 'PUT';    params: { type: string; id: number }; body: UpdateRubricItemFieldRequest; response: OkResponse };
+    update: { method: 'PUT';    params: { type: string; id: number }; body: UpdateCriterionFieldRequest; response: OkResponse };
     delete: { method: 'DELETE'; params: { type: string; id: number }; body: never; response: OkResponse };
   };
 
   rubricExpressions: {
     create: { method: 'POST';   body: CreateExpressionRequest; response: OkIdResponse };
     one:    { method: 'GET';    params: { id: number }; body: never; response: unknown };
-    update: { method: 'PUT';    params: { id: number }; body: CreateRubricItemRequest; response: OkResponse };
+    update: { method: 'PUT';    params: { id: number }; body: CreateCriterionRequest; response: OkResponse };
     delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
   };
 
   rubricCodes: {
     create: { method: 'POST';   body: CreateCodeRequest; response: OkIdResponse };
     one:    { method: 'GET';    params: { id: number }; body: never; response: unknown };
-    update: { method: 'PUT';    params: { id: number }; body: CreateRubricItemRequest; response: OkResponse };
+    update: { method: 'PUT';    params: { id: number }; body: CreateCriterionRequest; response: OkResponse };
     delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
   };
 
   rubricErrors: {
     create: { method: 'POST';   body: CreateErrorRequest; response: OkIdResponse };
     one:    { method: 'GET';    params: { id: number }; body: never; response: unknown };
-    update: { method: 'PUT';    params: { id: number }; body: CreateRubricItemRequest; response: OkResponse };
+    update: { method: 'PUT';    params: { id: number }; body: CreateCriterionRequest; response: OkResponse };
     delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
   };
 
@@ -391,10 +391,10 @@ export const API = {
     delete: (id: number) => `${BASE}/rubric-booleanqs/${id}`,
   },
 
-  rubricItems: {
-    one:    (type: string, id: number) => `${BASE}/rubric-items/${type}/${id}`,
-    update: (type: string, id: number) => `${BASE}/rubric-items/${type}/${id}`,
-    delete: (type: string, id: number) => `${BASE}/rubric-items/${type}/${id}`,
+  criteria: {
+    one:    (type: string, id: number) => `${BASE}/criteria/${type}/${id}`,
+    update: (type: string, id: number) => `${BASE}/criteria/${type}/${id}`,
+    delete: (type: string, id: number) => `${BASE}/criteria/${type}/${id}`,
   },
 
   rubricExpressions: {

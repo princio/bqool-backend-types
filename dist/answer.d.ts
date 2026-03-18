@@ -24,7 +24,7 @@ export interface BooleanAnswerRow {
     reviewed_count: number;
     booleanq_text?: string;
     item_type?: string;
-    rubric_item_id?: number;
+    criterion_id?: number;
 }
 /** Concept enriched with derived evaluation state from BooleanAnswers */
 export interface CorrectionConceptItem {

@@ -26,7 +26,7 @@ export interface BooleanAnswerRow {
   reviewed_count: number;
   booleanq_text?: string;
   item_type?: string;
-  rubric_item_id?: number;
+  criterion_id?: number;
 }
 
 // ── Derived correction items (rubric item + BooleanAnswer evaluation) ──

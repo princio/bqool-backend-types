@@ -36,24 +36,24 @@ export interface RubricErrorRow {
 export interface RubricBooleanQRow {
   id: number;
   item_type: string;
-  rubric_item_id: number;
+  criterion_id: number;
   text: string;
   parent_name?: string;
   parent_description?: string;
 }
 
-/** Common fields shared by all rubric item types */
-export interface RubricItemBase {
+/** Common fields shared by all criterion types */
+export interface CriterionBase {
   id: number;
   question_id: number;
   name: string;
   definition: string;
 }
 
-/** Union of all rubric item row types */
-export type RubricItem = RubricConceptRow | RubricExpressionRow | RubricCodeRow | RubricErrorRow;
+/** Union of all criterion row types */
+export type Criterion = RubricConceptRow | RubricExpressionRow | RubricCodeRow | RubricErrorRow;
 
-export type RubricItemWithBooleanQs =
+export type CriterionWithBooleanQs =
   | (RubricConceptRow & { booleanqs: Pick<RubricBooleanQRow, 'id' | 'text'>[] })
   | (RubricExpressionRow & { booleanqs: Pick<RubricBooleanQRow, 'id' | 'text'>[] })
   | (RubricCodeRow & { booleanqs: Pick<RubricBooleanQRow, 'id' | 'text'>[] })
@@ -134,7 +134,7 @@ export interface CreateCodeRequest { expression: string; type: string }
 
 export interface CreateErrorRequest { name: string; description: string }
 
-export interface UpdateRubricItemFieldRequest { field: string; value: string | number }
+export interface UpdateCriterionFieldRequest { field: string; value: string | number }
 
-/** Generic rubric item creation (covers expression, code, error) */
-export interface CreateRubricItemRequest { name?: string; expression?: string; severity?: number; definition?: string; description?: string }
+/** Generic criterion creation (covers expression, code, error) */
+export interface CreateCriterionRequest { name?: string; expression?: string; severity?: number; definition?: string; description?: string }

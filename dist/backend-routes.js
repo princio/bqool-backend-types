@@ -126,10 +126,10 @@ exports.API = {
         update: (id) => `${BASE}/rubric-booleanqs/${id}`,
         delete: (id) => `${BASE}/rubric-booleanqs/${id}`,
     },
-    rubricItems: {
-        one: (type, id) => `${BASE}/rubric-items/${type}/${id}`,
-        update: (type, id) => `${BASE}/rubric-items/${type}/${id}`,
-        delete: (type, id) => `${BASE}/rubric-items/${type}/${id}`,
+    criteria: {
+        one: (type, id) => `${BASE}/criteria/${type}/${id}`,
+        update: (type, id) => `${BASE}/criteria/${type}/${id}`,
+        delete: (type, id) => `${BASE}/criteria/${type}/${id}`,
     },
     rubricExpressions: {
         create: `${BASE}/rubric-expressions`,

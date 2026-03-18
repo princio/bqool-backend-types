@@ -6,7 +6,7 @@ import type { QuestionListItem, QuestionDetail, CreateQuestionRequest, UpdateQue
 import type { NavData, AnswerData } from './nav';
 import type { AnswerDetail, UpdateAnswerRequest, SetGradeRequest, SetBonusRequest, UpsertBooleanQAnswerRequest, ToggleProtectionResponse, BatchCreateResponse, BatchResetResponse, WorkdirStatusResponse, RecreateWorkdirResponse, ImportAnswerOutputResult, ConfirmReviewResult } from './answer';
 import type { CorrectItemResponse, PreviewItemResponse, AiModelRequest, LaunchItemCorrectionRequest, SaveReviewDraftRequest, ConfirmReviewRequest, ImportEvalRequest } from './ai';
-import type { RubricDetail, RubricExportData, SyncRubricPayload, RubricConceptRow, RubricBooleanQRow, CreateRubricConceptRequest, CreateBooleanQRequest, UpdateBooleanQRequest, CreateExpressionRequest, CreateCodeRequest, CreateErrorRequest, UpdateRubricItemFieldRequest, CreateRubricItemRequest } from './rubric';
+import type { RubricDetail, RubricExportData, SyncRubricPayload, RubricConceptRow, RubricBooleanQRow, CreateRubricConceptRequest, CreateBooleanQRequest, UpdateBooleanQRequest, CreateExpressionRequest, CreateCodeRequest, CreateErrorRequest, UpdateCriterionFieldRequest, CreateCriterionRequest } from './rubric';
 import type { PopulationListItem, CreatePopulationResponse, PopulationReviewData, ConfirmPopulationResult, PopulationItemPayload } from './rubric-draft';
 import type { BackupListItem } from './backup';
 import type { ImportJsonBody } from './import-export';
@@ -559,7 +559,7 @@ export interface BackendApiTypeMap {
             params: {
                 id: number;
             };
-            body: UpdateRubricItemFieldRequest;
+            body: UpdateCriterionFieldRequest;
             response: OkResponse;
         };
         delete: {
@@ -611,7 +611,7 @@ export interface BackendApiTypeMap {
             response: OkResponse;
         };
     };
-    rubricItems: {
+    criteria: {
         one: {
             method: 'GET';
             params: {
@@ -627,7 +627,7 @@ export interface BackendApiTypeMap {
                 type: string;
                 id: number;
             };
-            body: UpdateRubricItemFieldRequest;
+            body: UpdateCriterionFieldRequest;
             response: OkResponse;
         };
         delete: {
@@ -659,7 +659,7 @@ export interface BackendApiTypeMap {
             params: {
                 id: number;
             };
-            body: CreateRubricItemRequest;
+            body: CreateCriterionRequest;
             response: OkResponse;
         };
         delete: {
@@ -690,7 +690,7 @@ export interface BackendApiTypeMap {
             params: {
                 id: number;
             };
-            body: CreateRubricItemRequest;
+            body: CreateCriterionRequest;
             response: OkResponse;
         };
         delete: {
@@ -721,7 +721,7 @@ export interface BackendApiTypeMap {
             params: {
                 id: number;
             };
-            body: CreateRubricItemRequest;
+            body: CreateCriterionRequest;
             response: OkResponse;
         };
         delete: {
@@ -1055,7 +1055,7 @@ export declare const API: {
         readonly update: (id: number) => string;
         readonly delete: (id: number) => string;
     };
-    readonly rubricItems: {
+    readonly criteria: {
         readonly one: (type: string, id: number) => string;
         readonly update: (type: string, id: number) => string;
         readonly delete: (type: string, id: number) => string;
