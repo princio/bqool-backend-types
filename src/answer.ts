@@ -86,9 +86,23 @@ export type CorrectionItem =
   | CorrectionCodeItem
   | CorrectionErrorItem;
 
-export type CriterionDetailItem<T> = T & { booleanqs: RubricBooleanQRow[] };
+export interface CorrectionCriterionItem<T> {
+  criterion: T;
+  boolean_questions: RubricBooleanQRow[];
+  boolean_answers: BooleanAnswerRow[];
+}
 
 export type ConceptDetail = Pick<RubricConceptRow, 'id' | 'name'> & { definition?: string; required?: number };
+export type ExpressionDetail = Pick<RubricExpressionRow, 'id' | 'name' | 'severity'>;
+export type CodeDetail = Pick<RubricCodeRow, 'id' | 'name'>;
+export type ErrorDetail = Pick<RubricErrorRow, 'id' | 'name'>;
+
+export interface CorrectionData {
+  concepts: CorrectionCriterionItem<ConceptDetail>[];
+  expressions: CorrectionCriterionItem<ExpressionDetail>[];
+  codes: CorrectionCriterionItem<CodeDetail>[];
+  errors: CorrectionCriterionItem<ErrorDetail>[];
+}
 
 export interface AnswerDetail extends AnswerRow {
   student_name: string;
@@ -96,13 +110,7 @@ export interface AnswerDetail extends AnswerRow {
   question_text: string;
   workdir: string;
   generated_prompt: string;
-  booleanqs: BooleanAnswerRow[];
-  criteria: {
-    concepts: CriterionDetailItem<ConceptDetail>[];
-    expressions: CriterionDetailItem<Pick<RubricExpressionRow, 'id' | 'name' | 'severity'>>[];
-    codes: CriterionDetailItem<Pick<RubricCodeRow, 'id' | 'name'>>[];
-    errors: CriterionDetailItem<Pick<RubricErrorRow, 'id' | 'name'>>[];
-  };
+  correction: CorrectionData;
 }
 
 // ── Pipeline response types ──────────────────────────────────────────
