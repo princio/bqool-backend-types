@@ -36,6 +36,7 @@ export interface RubricBooleanQRow {
     parent_name?: string;
     parent_description?: string;
 }
+export type CriterionType = 'concept' | 'expression' | 'code' | 'error';
 /** Common fields shared by all criterion types */
 export interface CriterionBase {
     id: number;
