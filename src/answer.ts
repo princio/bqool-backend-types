@@ -1,4 +1,4 @@
-import type { RubricConceptRow, RubricExpressionRow, RubricCodeRow, RubricErrorRow, RubricBooleanQRow } from './rubric';
+import type { RubricConceptRow, RubricExpressionRow, RubricCodeRow, RubricErrorRow, RubricBooleanQRow, CriterionType } from './rubric';
 
 export interface AnswerRow {
   id: number;
@@ -86,7 +86,9 @@ export type CorrectionItem =
   | CorrectionCodeItem
   | CorrectionErrorItem;
 
-export type BaselineConcept = Pick<RubricConceptRow, 'id' | 'name'> & { definition?: string; required?: number };
+export type CriterionDetailItem<T> = T & { booleanqs: RubricBooleanQRow[] };
+
+export type ConceptDetail = Pick<RubricConceptRow, 'id' | 'name'> & { definition?: string; required?: number };
 
 export interface AnswerDetail extends AnswerRow {
   student_name: string;
@@ -95,11 +97,12 @@ export interface AnswerDetail extends AnswerRow {
   workdir: string;
   generated_prompt: string;
   booleanqs: BooleanAnswerRow[];
-  baseline_expressions: Pick<RubricExpressionRow, 'id' | 'name' | 'severity'>[];
-  baseline_concepts: BaselineConcept[];
-  baseline_codes: Pick<RubricCodeRow, 'id' | 'name'>[];
-  baseline_errors: Pick<RubricErrorRow, 'id' | 'name'>[];
-  rubric_booleanq: RubricBooleanQRow[];
+  criteria: {
+    concepts: CriterionDetailItem<ConceptDetail>[];
+    expressions: CriterionDetailItem<Pick<RubricExpressionRow, 'id' | 'name' | 'severity'>>[];
+    codes: CriterionDetailItem<Pick<RubricCodeRow, 'id' | 'name'>>[];
+    errors: CriterionDetailItem<Pick<RubricErrorRow, 'id' | 'name'>>[];
+  };
 }
 
 // ── Pipeline response types ──────────────────────────────────────────
@@ -183,3 +186,5 @@ export interface UpdateAnswerRequest { text?: string; blank?: boolean }
 export interface SetGradeRequest { grade: number }
 export interface SetBonusRequest { bonus: number | null }
 export interface UpsertBooleanQAnswerRequest { answer?: boolean; citations?: string[]; rationale?: string }
+
+export type PenmarkType = Exclude<CriterionType, 'concept'>
