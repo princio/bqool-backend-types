@@ -1,110 +1,52 @@
-import type { RubricConceptRow, RubricExpressionRow, RubricCodeRow, RubricErrorRow, RubricBooleanQRow, CriterionType } from './rubric';
-
-export interface AnswerRow {
-  id: number;
-  question_id: number;
-  student_id: number;
-  text: string;
-  isblank: number;
-  grade: number | null;
-  grade_bonus: number | null;
-  grade_rationale: string;
-  coherence_level: number;
-  coherence_rationale: string;
-  protected: number;
-  created_at: string;
-  updated_at: string | null;
-}
-
-export interface BooleanAnswerRow {
-  id: number;
-  answer_id: number;
-  rubric_booleanq_id: number;
-  answer: number;
-  citations: string[];
-  rationale: string;
-  reviewed_count: number;
-  booleanq_text?: string;
-  item_type?: string;
-  criterion_id?: number;
-}
+import type { Answer, BooleanAnswer, BooleanQ, Concept, Criterion, CriterionType } from '@princio/bqool';
 
 // ── Derived correction items (rubric item + BooleanAnswer evaluation) ──
 
 /** Concept enriched with derived evaluation state from BooleanAnswers */
-export interface CorrectionConceptItem {
-  id: number;
-  name: string;
-  definition?: string;
-  required?: number;
+export interface CorrectionConceptItem extends Pick<Concept, 'id' | 'name'>, Partial<Pick<Concept, 'definition' | 'required'>> {
   present: boolean;
   completeness: number;
   booleanq_count: number;
-  booleanq_answers: BooleanAnswerRow[];
+  booleanq_answers: BooleanAnswer[];
   rationale: string[];
   citations: string[];
 }
 
-/** Expression enriched with derived evaluation state */
-export interface CorrectionExpressionItem {
-  id: number;
-  name: string;
-  severity: number;
-  positive: boolean;
+/** Criterion (expression/code/error) enriched with derived evaluation state */
+export interface CorrectionCriterionItem extends Pick<Criterion, 'id' | 'name' | 'type' | 'severity'> {
   detected: boolean;
-  booleanq_answers: BooleanAnswerRow[];
+  booleanq_answers: BooleanAnswer[];
   rationale: string[];
   citations: string[];
 }
 
-/** Code item enriched with derived evaluation state */
-export interface CorrectionCodeItem {
-  id: number;
-  name: string;
-  severity: number;
-  positive: boolean;
-  detected: boolean;
-  booleanq_answers: BooleanAnswerRow[];
-  rationale: string[];
-  citations: string[];
-}
+/** @deprecated Use CorrectionCriterionItem */
+export type CorrectionExpressionItem = CorrectionCriterionItem;
+/** @deprecated Use CorrectionCriterionItem */
+export type CorrectionCodeItem = CorrectionCriterionItem;
+/** @deprecated Use CorrectionCriterionItem */
+export type CorrectionErrorItem = CorrectionCriterionItem;
 
-/** Error item enriched with derived evaluation state */
-export interface CorrectionErrorItem {
-  id: number;
-  name: string;
-  severity: number;
-  detected: boolean;
-  booleanq_answers: BooleanAnswerRow[];
-  rationale: string[];
-  citations: string[];
-}
+export type CorrectionItem = CorrectionConceptItem | CorrectionCriterionItem;
 
-export type CorrectionItem =
-  | CorrectionConceptItem
-  | CorrectionExpressionItem
-  | CorrectionCodeItem
-  | CorrectionErrorItem;
-
-export interface CorrectionCriterionItem<T> {
+export interface CorrectionCriterionDetail<T> {
   criterion: T;
-  boolean_questions: RubricBooleanQRow[];
-  boolean_answers: BooleanAnswerRow[];
+  boolean_questions: BooleanQ[];
+  boolean_answers: BooleanAnswer[];
 }
 
-export type ConceptDetail = Pick<RubricConceptRow, 'id' | 'name'> & { definition?: string; required?: number };
-export type ExpressionDetail = Pick<RubricExpressionRow, 'id' | 'name' | 'severity'>;
-export type CodeDetail = Pick<RubricCodeRow, 'id' | 'name'>;
-export type ErrorDetail = Pick<RubricErrorRow, 'id' | 'name'>;
+/** @deprecated Use CorrectionCriterionDetail */
+export type CorrectionCriterionItem_Legacy<T> = CorrectionCriterionDetail<T>;
+
+export type ConceptDetail = Pick<Concept, 'id' | 'name'> & { definition?: string; required?: number };
+export type CriterionDetail = Pick<Criterion, 'id' | 'name' | 'type' | 'severity'>;
 
 export interface CorrectionData {
-  concepts: CorrectionCriterionItem<ConceptDetail>[];
-  expressions: CorrectionCriterionItem<ExpressionDetail>[];
-  codes: CorrectionCriterionItem<CodeDetail>[];
-  errors: CorrectionCriterionItem<ErrorDetail>[];
+  concepts: CorrectionCriterionDetail<ConceptDetail>[];
+  criteria: CorrectionCriterionDetail<CriterionDetail>[];
 }
 
-export interface AnswerDetail extends AnswerRow {
+export interface AnswerDetail extends Answer {
   student_name: string;
   question_name: string;
   question_text: string;
@@ -165,6 +107,9 @@ export interface CreateOrphanCorrectionItemResult {
   id: number;
   category: FreeCorrectionCategory;
 }
+
+/** @deprecated Use CreateOrphanCorrectionItemResult */
+export type CreateOrphanCriterionResult = CreateOrphanCorrectionItemResult;
 
 export interface ConfirmReviewResult {
   executed: number;

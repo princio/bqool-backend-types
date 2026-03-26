@@ -71,30 +71,8 @@ exports.API = {
         protected: (id) => `${BASE}/answers/${id}/protected`,
         grade: (id) => `${BASE}/answers/${id}/grade`,
         bonus: (id) => `${BASE}/answers/${id}/bonus`,
-        workdir: (id) => `${BASE}/answers/${id}/workdir`,
-        workdirStatus: (id) => `${BASE}/answers/${id}/workdir-status`,
         byStudent: `${BASE}/answers/by-student`,
         byTest: `${BASE}/answers/by-test`,
-        batch: `${BASE}/answers/batch`,
-        batchReset: `${BASE}/answers/batch-reset`,
-        correction: (category, itemId) => `${BASE}/answers/correction/${category}/${itemId}`,
-        ai: {
-            importOutput: (id) => `${BASE}/answers/${id}/ai/import-output`,
-            reviewData: (id) => `${BASE}/answers/${id}/ai/review-data`,
-            reviewDraft: (id) => `${BASE}/answers/${id}/ai/review-draft`,
-            reviewConfirm: (id) => `${BASE}/answers/${id}/ai/review/confirm`,
-            correctBooleanq: (answerId, booleanqId) => `${BASE}/answers/${answerId}/ai/correct-booleanq/${booleanqId}`,
-            previewBooleanq: (answerId, booleanqId) => `${BASE}/answers/${answerId}/ai/preview-booleanq/${booleanqId}`,
-            correctItem: (answerId, itemType, itemId) => `${BASE}/answers/${answerId}/ai/correct-item/${itemType}/${itemId}`,
-            previewItem: (answerId, itemType, itemId) => `${BASE}/answers/${answerId}/ai/preview-item/${itemType}/${itemId}`,
-            assessCoherence: (answerId) => `${BASE}/answers/${answerId}/ai/assess-coherence`,
-        },
-    },
-    // ── AI item-correction batch ──────────────────────────────────────────────
-    aiItemCorrection: {
-        run: `${BASE}/ai/item-correction/run`,
-        status: `${BASE}/ai/item-correction/status`,
-        stop: `${BASE}/ai/item-correction/stop`,
     },
     // ── Boolean answers ───────────────────────────────────────────────────────
     booleanAnswers: {
@@ -112,82 +90,11 @@ exports.API = {
         export: `${BASE}/rubric/export`,
         sync: `${BASE}/rubric/sync`,
     },
-    rubricConcepts: {
-        list: `${BASE}/rubric-concepts`,
-        create: `${BASE}/rubric-concepts`,
-        one: (id) => `${BASE}/rubric-concepts/${id}`,
-        update: (id) => `${BASE}/rubric-concepts/${id}`,
-        delete: (id) => `${BASE}/rubric-concepts/${id}`,
-    },
-    rubricBooleanqs: {
-        list: (itemType, itemId) => `${BASE}/rubric-booleanqs/${itemType}/${itemId}`,
-        create: `${BASE}/rubric-booleanqs`,
-        one: (id) => `${BASE}/rubric-booleanqs/${id}`,
-        update: (id) => `${BASE}/rubric-booleanqs/${id}`,
-        delete: (id) => `${BASE}/rubric-booleanqs/${id}`,
-    },
     criteria: {
         one: (type, id) => `${BASE}/criteria/${type}/${id}`,
         update: (type, id) => `${BASE}/criteria/${type}/${id}`,
         delete: (type, id) => `${BASE}/criteria/${type}/${id}`,
     },
-    rubricExpressions: {
-        create: `${BASE}/rubric-expressions`,
-        one: (id) => `${BASE}/rubric-expressions/${id}`,
-        update: (id) => `${BASE}/rubric-expressions/${id}`,
-        delete: (id) => `${BASE}/rubric-expressions/${id}`,
-    },
-    rubricCodes: {
-        create: `${BASE}/rubric-codes`,
-        one: (id) => `${BASE}/rubric-codes/${id}`,
-        update: (id) => `${BASE}/rubric-codes/${id}`,
-        delete: (id) => `${BASE}/rubric-codes/${id}`,
-    },
-    rubricErrors: {
-        create: `${BASE}/rubric-errors`,
-        one: (id) => `${BASE}/rubric-errors/${id}`,
-        update: (id) => `${BASE}/rubric-errors/${id}`,
-        delete: (id) => `${BASE}/rubric-errors/${id}`,
-    },
-    // ── Rubric drafts (population / seek / merge) ─────────────────────────────
-    rubricDrafts: {
-        list: `${BASE}/rubric-drafts`,
-        create: `${BASE}/rubric-drafts`,
-        import: (populationId) => `${BASE}/rubric-drafts/${populationId}/import`,
-        reviewData: (populationId) => `${BASE}/rubric-drafts/${populationId}/review-data`,
-        confirm: (populationId) => `${BASE}/rubric-drafts/${populationId}/confirm`,
-        batch: (itemType) => ({
-            workdirs: `${BASE}/rubric-draft/batch/${itemType}/workdirs`,
-            run: `${BASE}/rubric-draft/batch/${itemType}/run`,
-            status: `${BASE}/rubric-draft/batch/${itemType}/status`,
-            stop: `${BASE}/rubric-draft/batch/${itemType}/stop`,
-            overview: `${BASE}/rubric-draft/batch/${itemType}/overview`,
-            mergeWorkdir: `${BASE}/rubric-draft/batch/${itemType}/merge-workdir`,
-            mergeStatus: `${BASE}/rubric-draft/batch/${itemType}/merge-status`,
-            importMerge: `${BASE}/rubric-draft/batch/${itemType}/import-merge`,
-        }),
-    },
-    // ── Sessions ──────────────────────────────────────────────────────────────
-    sessions: {
-        list: `${BASE}/sessions`,
-        create: `${BASE}/sessions`,
-        one: (id) => `${BASE}/sessions/${id}`,
-        update: (id) => `${BASE}/sessions/${id}`,
-        delete: (id) => `${BASE}/sessions/${id}`,
-        persist: (id) => `${BASE}/sessions/${id}/persist`,
-    },
-    // ── Backups ───────────────────────────────────────────────────────────────
-    backups: {
-        list: `${BASE}/backups`,
-        create: `${BASE}/backups`,
-        export: `${BASE}/backups/export`,
-        import: `${BASE}/backups/import`,
-        restore: (id) => `${BASE}/backups/${id}/restore`,
-        one: (id) => `${BASE}/backups/${id}`,
-        delete: (id) => `${BASE}/backups/${id}`,
-    },
-    // ── Import/Export ─────────────────────────────────────────────────────────
-    importJson: `${BASE}/import-json`,
     // ── PDF ───────────────────────────────────────────────────────────────────
     pdf: {
         studentQuestion: `${BASE}/pdf/student-question`,

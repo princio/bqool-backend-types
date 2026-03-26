@@ -1,12 +1,7 @@
 import type { TestRef } from './test';
 import type { Question } from './question';
 import type { StudentSummary } from './student';
-/** Minimal school class listing item */
-export interface SchoolClassListItem {
-    id: number;
-    name: string;
-}
-export interface SchoolClassSummary {
+export interface ClassRoomSummary {
     id: number;
     name: string;
     students_count: number;
@@ -14,7 +9,7 @@ export interface SchoolClassSummary {
         questions: Pick<Question, 'id' | 'name'>[];
     })[];
 }
-export interface SchoolClassDetail {
+export interface ClassRoomDetail {
     id: number;
     name: string;
     students: StudentSummary[];
@@ -22,6 +17,6 @@ export interface SchoolClassDetail {
         questions_count: number;
     })[];
 }
-export interface CreateSchoolClassRequest {
+export interface CreateClassRoomRequest {
     name: string;
 }

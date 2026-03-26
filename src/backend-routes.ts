@@ -1,6 +1,6 @@
-import type { OkResponse, OkIdResponse, ImportJsonResponse } from './common';
-import type { SchoolClassListItem, SchoolClassSummary, SchoolClassDetail, CreateSchoolClassRequest } from './class';
-import type { StudentSummary, StudentDetail, StudentTestsData, StudentTestAnswersData, AddStudentRequest } from './student';
+import type { OkResponse, OkIdResponse } from './common';
+import type { ClassRoomSummary, ClassRoomDetail, CreateClassRoomRequest } from './classroom';
+import type { StudentDetail, StudentTestsData, StudentTestAnswersData, AddStudentRequest } from './student';
 import type { TestListItem, TestRef, TestDetail, TestRisultatiData, CreateTestRequest, UpdateTestRequest, AddQuestionToTestRequest, UpdateQuestionNumberRequest } from './test';
 import type { QuestionListItem, QuestionDetail, CreateQuestionRequest, UpdateQuestionRequest } from './question';
 import type { NavData, AnswerData } from './nav';
@@ -11,46 +11,16 @@ import type {
   SetBonusRequest,
   UpsertBooleanQAnswerRequest,
   ToggleProtectionResponse,
-  BatchCreateResponse,
-  BatchResetResponse,
-  WorkdirStatusResponse,
-  RecreateWorkdirResponse,
-  ImportAnswerOutputResult,
-  ConfirmReviewResult,
 } from './answer';
-import type {
-  CorrectItemResponse,
-  PreviewItemResponse,
-  AiModelRequest,
-  LaunchItemCorrectionRequest,
-  SaveReviewDraftRequest,
-  ConfirmReviewRequest,
-  ImportEvalRequest,
-} from './ai';
 import type {
   RubricDetail,
   RubricExportData,
   SyncRubricPayload,
-  RubricConceptRow,
-  RubricBooleanQRow,
-  CreateRubricConceptRequest,
+  BooleanQ,
   CreateBooleanQRequest,
   UpdateBooleanQRequest,
-  CreateExpressionRequest,
-  CreateCodeRequest,
-  CreateErrorRequest,
   UpdateCriterionFieldRequest,
-  CreateCriterionRequest,
 } from './rubric';
-import type {
-  PopulationListItem,
-  CreatePopulationResponse,
-  PopulationReviewData,
-  ConfirmPopulationResult,
-  PopulationItemPayload,
-} from './rubric-draft';
-import type { BackupListItem } from './backup';
-import type { ImportJsonBody } from './import-export';
 
 /**
  * Maps each route key to its HTTP method, body, params, query, and response types.
@@ -63,10 +33,10 @@ export interface BackendApiTypeMap {
   };
 
   classes: {
-    list:   { method: 'GET';    body: never; response: SchoolClassSummary[] };
-    create: { method: 'POST';   body: CreateSchoolClassRequest; response: OkIdResponse };
-    one:    { method: 'GET';    params: { id: number }; body: never; response: SchoolClassDetail };
-    update: { method: 'PUT';    params: { id: number }; body: CreateSchoolClassRequest; response: OkResponse };
+    list:   { method: 'GET';    body: never; response: ClassRoomSummary[] };
+    create: { method: 'POST';   body: CreateClassRoomRequest; response: OkIdResponse };
+    one:    { method: 'GET';    params: { id: number }; body: never; response: ClassRoomDetail };
+    update: { method: 'PUT';    params: { id: number }; body: CreateClassRoomRequest; response: OkResponse };
     delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
     students: {
       add:    { method: 'POST';   params: { classId: number }; body: AddStudentRequest; response: OkIdResponse };
@@ -117,31 +87,16 @@ export interface BackendApiTypeMap {
     protected:    { method: 'PUT';    params: { id: number }; body: never; response: ToggleProtectionResponse };
     grade:        { method: 'PUT';    params: { id: number }; body: SetGradeRequest; response: OkResponse };
     bonus:        { method: 'PUT';    params: { id: number }; body: SetBonusRequest; response: OkResponse };
-    workdir:      { method: 'POST';   params: { id: number }; body: never; response: RecreateWorkdirResponse };
-    workdirStatus:{ method: 'GET';    params: { id: number }; body: never; response: WorkdirStatusResponse };
     byStudent:    { method: 'GET';    query: { student_id: number; question_id: number }; body: never; response: unknown };
     byTest:       { method: 'GET';    query: { test_id: number }; body: never; response: unknown };
-    batch:        { method: 'POST';   body: unknown; response: BatchCreateResponse };
-    batchReset:   { method: 'POST';   body: unknown; response: BatchResetResponse };
-    correction:   { method: 'DELETE'; params: { category: string; itemId: number }; body: never; response: OkResponse };
-    ai: {
-      importOutput:    { method: 'POST'; params: { id: number }; body: ImportEvalRequest; response: ImportAnswerOutputResult };
-      reviewData:      { method: 'GET';  params: { id: number }; body: never; response: unknown };
-      reviewDraft:     { method: 'GET';  params: { id: number }; body: never; response: unknown };
-      saveReviewDraft: { method: 'PUT';  params: { id: number }; body: SaveReviewDraftRequest; response: OkResponse };
-      reviewConfirm:   { method: 'POST'; params: { id: number }; body: ConfirmReviewRequest; response: ConfirmReviewResult };
-      correctBooleanq: { method: 'POST'; params: { answerId: number; booleanqId: number }; body: AiModelRequest; response: CorrectItemResponse };
-      previewBooleanq: { method: 'POST'; params: { answerId: number; booleanqId: number }; body: AiModelRequest; response: PreviewItemResponse };
-      correctItem:     { method: 'POST'; params: { answerId: number; itemType: string; itemId: number }; body: AiModelRequest; response: CorrectItemResponse };
-      previewItem:     { method: 'POST'; params: { answerId: number; itemType: string; itemId: number }; body: AiModelRequest; response: PreviewItemResponse };
-      assessCoherence: { method: 'POST'; params: { answerId: number }; body: AiModelRequest; response: unknown };
-    };
   };
 
-  aiItemCorrection: {
-    run:    { method: 'POST'; body: LaunchItemCorrectionRequest; response: unknown };
-    status: { method: 'GET';  body: never; response: unknown };
-    stop:   { method: 'POST'; body: never; response: unknown };
+  booleanqs: {
+    list:   { method: 'GET';    params: { itemType: string; itemId: number }; body: never; response: BooleanQ[] };
+    create: { method: 'POST';   body: CreateBooleanQRequest; response: OkIdResponse };
+    one:    { method: 'GET';    params: { id: number }; body: never; response: BooleanQ };
+    update: { method: 'PUT';    params: { id: number }; body: UpdateBooleanQRequest; response: OkResponse };
+    delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
   };
 
   booleanAnswers: {
@@ -161,88 +116,10 @@ export interface BackendApiTypeMap {
     sync:   { method: 'POST'; body: SyncRubricPayload; response: OkResponse };
   };
 
-  rubricConcepts: {
-    list:   { method: 'GET';    query: { question_id: number }; body: never; response: RubricConceptRow[] };
-    create: { method: 'POST';   body: CreateRubricConceptRequest; response: OkIdResponse };
-    one:    { method: 'GET';    params: { id: number }; body: never; response: RubricConceptRow };
-    update: { method: 'PUT';    params: { id: number }; body: UpdateCriterionFieldRequest; response: OkResponse };
-    delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
-  };
-
-  rubricBooleanqs: {
-    list:   { method: 'GET';    params: { itemType: string; itemId: number }; body: never; response: RubricBooleanQRow[] };
-    create: { method: 'POST';   body: CreateBooleanQRequest; response: OkIdResponse };
-    one:    { method: 'GET';    params: { id: number }; body: never; response: RubricBooleanQRow };
-    update: { method: 'PUT';    params: { id: number }; body: UpdateBooleanQRequest; response: OkResponse };
-    delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
-  };
-
   criteria: {
     one:    { method: 'GET';    params: { type: string; id: number }; body: never; response: unknown };
     update: { method: 'PUT';    params: { type: string; id: number }; body: UpdateCriterionFieldRequest; response: OkResponse };
     delete: { method: 'DELETE'; params: { type: string; id: number }; body: never; response: OkResponse };
-  };
-
-  rubricExpressions: {
-    create: { method: 'POST';   body: CreateExpressionRequest; response: OkIdResponse };
-    one:    { method: 'GET';    params: { id: number }; body: never; response: unknown };
-    update: { method: 'PUT';    params: { id: number }; body: CreateCriterionRequest; response: OkResponse };
-    delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
-  };
-
-  rubricCodes: {
-    create: { method: 'POST';   body: CreateCodeRequest; response: OkIdResponse };
-    one:    { method: 'GET';    params: { id: number }; body: never; response: unknown };
-    update: { method: 'PUT';    params: { id: number }; body: CreateCriterionRequest; response: OkResponse };
-    delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
-  };
-
-  rubricErrors: {
-    create: { method: 'POST';   body: CreateErrorRequest; response: OkIdResponse };
-    one:    { method: 'GET';    params: { id: number }; body: never; response: unknown };
-    update: { method: 'PUT';    params: { id: number }; body: CreateCriterionRequest; response: OkResponse };
-    delete: { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
-  };
-
-  rubricDrafts: {
-    list:       { method: 'GET';  body: never; response: PopulationListItem[] };
-    create:     { method: 'POST'; body: unknown; response: CreatePopulationResponse };
-    import:     { method: 'POST'; params: { populationId: string }; body: unknown; response: unknown };
-    reviewData: { method: 'GET';  params: { populationId: string }; body: never; response: PopulationReviewData };
-    confirm:    { method: 'POST'; params: { populationId: string }; body: Record<string, PopulationItemPayload[]>; response: ConfirmPopulationResult };
-    batch: {
-      workdirs:    { method: 'POST'; params: { itemType: string }; body: unknown; response: unknown };
-      run:         { method: 'POST'; params: { itemType: string }; body: unknown; response: unknown };
-      status:      { method: 'GET';  params: { itemType: string }; body: never; response: unknown };
-      stop:        { method: 'POST'; params: { itemType: string }; body: never; response: unknown };
-      overview:    { method: 'GET';  params: { itemType: string }; body: never; response: unknown };
-      mergeWorkdir:{ method: 'POST'; params: { itemType: string }; body: unknown; response: unknown };
-      mergeStatus: { method: 'GET';  params: { itemType: string }; body: never; response: unknown };
-      importMerge: { method: 'POST'; params: { itemType: string }; body: unknown; response: unknown };
-    };
-  };
-
-  sessions: {
-    list:    { method: 'GET';    body: never; response: unknown[] };
-    create:  { method: 'POST';   body: unknown; response: OkIdResponse };
-    one:     { method: 'GET';    params: { id: number }; body: never; response: unknown };
-    update:  { method: 'PUT';    params: { id: number }; body: unknown; response: OkResponse };
-    delete:  { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
-    persist: { method: 'POST';   params: { id: number }; body: never; response: OkResponse };
-  };
-
-  backups: {
-    list:    { method: 'GET';    body: never; response: BackupListItem[] };
-    create:  { method: 'POST';   body: unknown; response: OkIdResponse };
-    export:  { method: 'GET';    body: never; response: unknown };
-    import:  { method: 'POST';   body: unknown; response: unknown };
-    restore: { method: 'POST';   params: { id: number }; body: never; response: OkResponse };
-    one:     { method: 'GET';    params: { id: number }; body: never; response: BackupListItem };
-    delete:  { method: 'DELETE'; params: { id: number }; body: never; response: OkResponse };
-  };
-
-  importJson: {
-    run: { method: 'POST'; body: ImportJsonBody; response: ImportJsonResponse };
   };
 
   pdf: {
@@ -328,32 +205,8 @@ export const API = {
     protected:    (id: number) => `${BASE}/answers/${id}/protected`,
     grade:        (id: number) => `${BASE}/answers/${id}/grade`,
     bonus:        (id: number) => `${BASE}/answers/${id}/bonus`,
-    workdir:      (id: number) => `${BASE}/answers/${id}/workdir`,
-    workdirStatus:(id: number) => `${BASE}/answers/${id}/workdir-status`,
     byStudent:    `${BASE}/answers/by-student`,
     byTest:       `${BASE}/answers/by-test`,
-    batch:        `${BASE}/answers/batch`,
-    batchReset:   `${BASE}/answers/batch-reset`,
-    correction:   (category: string, itemId: number) => `${BASE}/answers/correction/${category}/${itemId}`,
-
-    ai: {
-      importOutput:    (id: number) => `${BASE}/answers/${id}/ai/import-output`,
-      reviewData:      (id: number) => `${BASE}/answers/${id}/ai/review-data`,
-      reviewDraft:     (id: number) => `${BASE}/answers/${id}/ai/review-draft`,
-      reviewConfirm:   (id: number) => `${BASE}/answers/${id}/ai/review/confirm`,
-      correctBooleanq: (answerId: number, booleanqId: number) => `${BASE}/answers/${answerId}/ai/correct-booleanq/${booleanqId}`,
-      previewBooleanq: (answerId: number, booleanqId: number) => `${BASE}/answers/${answerId}/ai/preview-booleanq/${booleanqId}`,
-      correctItem:     (answerId: number, itemType: string, itemId: number) => `${BASE}/answers/${answerId}/ai/correct-item/${itemType}/${itemId}`,
-      previewItem:     (answerId: number, itemType: string, itemId: number) => `${BASE}/answers/${answerId}/ai/preview-item/${itemType}/${itemId}`,
-      assessCoherence: (answerId: number) => `${BASE}/answers/${answerId}/ai/assess-coherence`,
-    },
-  },
-
-  // ── AI item-correction batch ──────────────────────────────────────────────
-  aiItemCorrection: {
-    run:    `${BASE}/ai/item-correction/run`,
-    status: `${BASE}/ai/item-correction/status`,
-    stop:   `${BASE}/ai/item-correction/stop`,
   },
 
   // ── Boolean answers ───────────────────────────────────────────────────────
@@ -375,92 +228,11 @@ export const API = {
     sync:   `${BASE}/rubric/sync`,
   },
 
-  rubricConcepts: {
-    list:   `${BASE}/rubric-concepts`,
-    create: `${BASE}/rubric-concepts`,
-    one:    (id: number) => `${BASE}/rubric-concepts/${id}`,
-    update: (id: number) => `${BASE}/rubric-concepts/${id}`,
-    delete: (id: number) => `${BASE}/rubric-concepts/${id}`,
-  },
-
-  rubricBooleanqs: {
-    list:   (itemType: string, itemId: number) => `${BASE}/rubric-booleanqs/${itemType}/${itemId}`,
-    create: `${BASE}/rubric-booleanqs`,
-    one:    (id: number) => `${BASE}/rubric-booleanqs/${id}`,
-    update: (id: number) => `${BASE}/rubric-booleanqs/${id}`,
-    delete: (id: number) => `${BASE}/rubric-booleanqs/${id}`,
-  },
-
   criteria: {
     one:    (type: string, id: number) => `${BASE}/criteria/${type}/${id}`,
     update: (type: string, id: number) => `${BASE}/criteria/${type}/${id}`,
     delete: (type: string, id: number) => `${BASE}/criteria/${type}/${id}`,
   },
-
-  rubricExpressions: {
-    create: `${BASE}/rubric-expressions`,
-    one:    (id: number) => `${BASE}/rubric-expressions/${id}`,
-    update: (id: number) => `${BASE}/rubric-expressions/${id}`,
-    delete: (id: number) => `${BASE}/rubric-expressions/${id}`,
-  },
-
-  rubricCodes: {
-    create: `${BASE}/rubric-codes`,
-    one:    (id: number) => `${BASE}/rubric-codes/${id}`,
-    update: (id: number) => `${BASE}/rubric-codes/${id}`,
-    delete: (id: number) => `${BASE}/rubric-codes/${id}`,
-  },
-
-  rubricErrors: {
-    create: `${BASE}/rubric-errors`,
-    one:    (id: number) => `${BASE}/rubric-errors/${id}`,
-    update: (id: number) => `${BASE}/rubric-errors/${id}`,
-    delete: (id: number) => `${BASE}/rubric-errors/${id}`,
-  },
-
-  // ── Rubric drafts (population / seek / merge) ─────────────────────────────
-  rubricDrafts: {
-    list:       `${BASE}/rubric-drafts`,
-    create:     `${BASE}/rubric-drafts`,
-    import:     (populationId: string) => `${BASE}/rubric-drafts/${populationId}/import`,
-    reviewData: (populationId: string) => `${BASE}/rubric-drafts/${populationId}/review-data`,
-    confirm:    (populationId: string) => `${BASE}/rubric-drafts/${populationId}/confirm`,
-
-    batch: (itemType: string) => ({
-      workdirs:    `${BASE}/rubric-draft/batch/${itemType}/workdirs`,
-      run:         `${BASE}/rubric-draft/batch/${itemType}/run`,
-      status:      `${BASE}/rubric-draft/batch/${itemType}/status`,
-      stop:        `${BASE}/rubric-draft/batch/${itemType}/stop`,
-      overview:    `${BASE}/rubric-draft/batch/${itemType}/overview`,
-      mergeWorkdir:`${BASE}/rubric-draft/batch/${itemType}/merge-workdir`,
-      mergeStatus: `${BASE}/rubric-draft/batch/${itemType}/merge-status`,
-      importMerge: `${BASE}/rubric-draft/batch/${itemType}/import-merge`,
-    }),
-  },
-
-  // ── Sessions ──────────────────────────────────────────────────────────────
-  sessions: {
-    list:    `${BASE}/sessions`,
-    create:  `${BASE}/sessions`,
-    one:     (id: number) => `${BASE}/sessions/${id}`,
-    update:  (id: number) => `${BASE}/sessions/${id}`,
-    delete:  (id: number) => `${BASE}/sessions/${id}`,
-    persist: (id: number) => `${BASE}/sessions/${id}/persist`,
-  },
-
-  // ── Backups ───────────────────────────────────────────────────────────────
-  backups: {
-    list:    `${BASE}/backups`,
-    create:  `${BASE}/backups`,
-    export:  `${BASE}/backups/export`,
-    import:  `${BASE}/backups/import`,
-    restore: (id: number) => `${BASE}/backups/${id}/restore`,
-    one:     (id: number) => `${BASE}/backups/${id}`,
-    delete:  (id: number) => `${BASE}/backups/${id}`,
-  },
-
-  // ── Import/Export ─────────────────────────────────────────────────────────
-  importJson: `${BASE}/import-json`,
 
   // ── PDF ───────────────────────────────────────────────────────────────────
   pdf: {

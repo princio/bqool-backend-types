@@ -4,9 +4,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "update-princio": "npm update --no-audit --no-fund @princio/bqool @princio/bqool-runner-types"
   },
   "dependencies": {
+    "@princio/bqool": "github:princio/bqool",
     "@princio/bqool-runner-types": "github:princio/bqool-runner-types"
   },
   "devDependencies": {

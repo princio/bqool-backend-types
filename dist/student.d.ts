@@ -1,5 +1,5 @@
 import type { TestRef, TestListItem } from './test';
-import type { SchoolClassListItem } from './class';
+import type { ClassRoomDetail } from './classroom';
 import type { AnswerDetail } from './answer';
 export interface StudentSummary {
     id: number;
@@ -13,7 +13,7 @@ export interface StudentDetail {
 }
 export interface StudentTestData {
     test: TestRef;
-    classroom: SchoolClassListItem;
+    classroom: ClassRoomDetail;
     student: StudentSummary;
     questions: {
         question_id: number;
@@ -25,7 +25,7 @@ export interface StudentTestData {
 }
 export interface StudentTestsData {
     student: StudentSummary;
-    classroom: SchoolClassListItem;
+    classroom: ClassRoomDetail;
     tests: {
         id: number;
         name: string;

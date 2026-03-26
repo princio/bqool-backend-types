@@ -1,5 +1,5 @@
 import type { StudentSummary, StudentDetail } from './student';
-import type { QuestionRow } from './question';
+import type { Question } from './question';
 export interface NavAnswerSummary {
     id: number;
     grade: number | null;
@@ -35,7 +35,7 @@ export interface NavTestContext {
 }
 export interface NavData {
     student: StudentSummary;
-    question: QuestionRow;
+    question: Question;
     siblings: (StudentSummary & {
         score: SiblingScore | null;
     })[];
@@ -46,6 +46,6 @@ export interface AnswerData {
     text: string | null;
     isblank: boolean;
     student: StudentDetail;
-    question: QuestionRow;
+    question: Question;
     siblings: StudentSummary[];
 }

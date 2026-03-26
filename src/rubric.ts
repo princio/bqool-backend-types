@@ -1,48 +1,6 @@
-import type { BooleanAnswerRow } from './answer';
+import type { BooleanAnswer, BooleanQ, Concept, Criterion, CriterionType } from '@princio/bqool';
 
-export interface RubricConceptRow {
-  id: number;
-  question_id: number;
-  name: string;
-  definition: string;
-  position: number;
-  required: number;
-}
-
-export interface RubricExpressionRow {
-  id: number;
-  question_id: number;
-  name: string;
-  definition: string;
-  severity: number;
-}
-
-export interface RubricCodeRow {
-  id: number;
-  question_id: number;
-  name: string;
-  definition: string;
-  severity: number;
-}
-
-export interface RubricErrorRow {
-  id: number;
-  question_id: number;
-  name: string;
-  definition: string;
-  severity: number;
-}
-
-export interface RubricBooleanQRow {
-  id: number;
-  item_type: string;
-  criterion_id: number;
-  text: string;
-  parent_name?: string;
-  parent_description?: string;
-}
-
-export type CriterionType = 'concept' | 'expression' | 'code' | 'error';
+export type { BooleanAnswer, BooleanQ, Concept, Criterion, CriterionType } from '@princio/bqool';
 
 /** Common fields shared by all criterion types */
 export interface CriterionBase {
@@ -52,21 +10,17 @@ export interface CriterionBase {
   definition: string;
 }
 
-/** Union of all criterion row types */
-export type Criterion = RubricConceptRow | RubricExpressionRow | RubricCodeRow | RubricErrorRow;
+/** Union of all rubric item types */
+export type RubricItem = Concept | Criterion;
 
 export type CriterionWithBooleanQs =
-  | (RubricConceptRow & { booleanqs: Pick<RubricBooleanQRow, 'id' | 'text'>[] })
-  | (RubricExpressionRow & { booleanqs: Pick<RubricBooleanQRow, 'id' | 'text'>[] })
-  | (RubricCodeRow & { booleanqs: Pick<RubricBooleanQRow, 'id' | 'text'>[] })
-  | (RubricErrorRow & { booleanqs: Pick<RubricBooleanQRow, 'id' | 'text'>[] });
+  | (Concept & { booleanqs: Pick<BooleanQ, 'id' | 'text'>[] })
+  | (Criterion & { booleanqs: Pick<BooleanQ, 'id' | 'text'>[] });
 
 export interface RubricExportData {
   question_id: string;
-  concepts: (RubricConceptRow & { booleanqs: RubricBooleanQRow[] })[];
-  expressions: (RubricExpressionRow & { booleanqs: RubricBooleanQRow[] })[];
-  code: (RubricCodeRow & { booleanqs: RubricBooleanQRow[] })[];
-  errors: (RubricErrorRow & { booleanqs: RubricBooleanQRow[] })[];
+  concepts: (Concept & { booleanqs: BooleanQ[] })[];
+  criteria: (Criterion & { booleanqs: BooleanQ[] })[];
   students: string[];
   answers: Record<string, string>;
 }
@@ -91,7 +45,7 @@ export interface RubricDetail {
 }
 
 export interface ReviewEval {
-  booleanqs: BooleanAnswerRow[];
+  booleanqs: BooleanAnswer[];
   coherence: { level: number; rationale: string } | null;
 }
 
@@ -104,7 +58,7 @@ export interface ReviewData {
   eval: ReviewEval;
   suggestions: Record<string, unknown>;
   modifications: RubricModification[];
-  rubric_booleanq: RubricBooleanQRow[];
+  rubric_booleanq: BooleanQ[];
   warnings: string[];
 }
 
@@ -127,8 +81,8 @@ export interface SyncRubricPayload {
 
 export interface CreateRubricConceptRequest { name: string; definition: string }
 
-export interface CreateBooleanQRequest { item_type: string; item_id: number; text: string; italian_text?: string }
-export interface UpdateBooleanQRequest { text?: string; italian_text?: string }
+export interface CreateBooleanQRequest { criterion_type: string; criterion_id: number; text: string }
+export interface UpdateBooleanQRequest { text?: string }
 
 export interface CreateExpressionRequest { name: string; type: string }
 

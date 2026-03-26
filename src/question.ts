@@ -1,13 +1,8 @@
 import type { TestQuestionLink, TestListItem, TestRef } from './test';
-import type { SchoolClassListItem } from './class';
+import type { ClassRoomDetail } from './classroom';
+import type { Question } from '@princio/bqool';
 
-export interface QuestionRow {
-  id: number;
-  name: string;
-  text: string | null;
-  expected_answer: string | null;
-  booleanqs_total?: number;
-}
+export type { Question } from '@princio/bqool';
 
 export interface QuestionListItem {
   id: number;
@@ -55,8 +50,8 @@ export interface QuestionDetailStudent {
 export interface QuestionDetail {
   tests: (TestListItem & { question_id: number })[];
   test: TestRef | null;
-  classroom: SchoolClassListItem | null;
-  question: QuestionRow;
+  classroom: ClassRoomDetail | null;
+  question: Question;
   students: QuestionDetailStudent[];
   answers: Record<string, string>;
   answer_count: number;

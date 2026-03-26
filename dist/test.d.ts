@@ -1,11 +1,7 @@
-import type { QuestionRow } from './question';
-import type { SchoolClassListItem } from './class';
+import { ClassRoomDetail } from './classroom';
+import type { Question } from './question';
 import type { StudentSummary } from './student';
-export interface TestRow {
-    id: number;
-    name: string;
-    classroom_id: number;
-}
+export type { Test } from '@princio/bqool';
 /** Minimal test reference */
 export interface TestRef {
     id: number;
@@ -25,7 +21,7 @@ export interface TestQuestionLink {
     question_id: number;
 }
 /** Question shape inside TestDetail */
-export interface TestDetailQuestion extends Pick<QuestionRow, 'id' | 'name'> {
+export interface TestDetailQuestion extends Pick<Question, 'id' | 'name'> {
     number: number | null;
     text: string;
     expected_answer: string;
@@ -37,7 +33,7 @@ export interface TestDetailQuestion extends Pick<QuestionRow, 'id' | 'name'> {
 }
 export interface TestDetail {
     test: TestRef;
-    classroom: SchoolClassListItem;
+    classroom: ClassRoomDetail;
     questions: TestDetailQuestion[];
     students: StudentSummary[];
 }
