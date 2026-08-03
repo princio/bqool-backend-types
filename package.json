@@ -7,11 +7,10 @@
 		"build": "tsc",
 		"check": "biome check .",
 		"format": "biome check --write .",
-		"update-bqool": "npm update --no-audit --no-fund @princio/bqool @princio/bqool-runner-types"
+		"update-bqool": "npm update --no-audit --no-fund @princio/bqool"
 	},
 	"dependencies": {
-		"@princio/bqool": "file:../bqool",
-		"@princio/bqool-runner-types": "file:../bqool-runner-types"
+		"@princio/bqool": "file:../bqool"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.4.9",
